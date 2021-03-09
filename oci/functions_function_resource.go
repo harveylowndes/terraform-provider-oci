@@ -27,6 +27,12 @@ func FunctionsFunctionResource() *schema.Resource {
 		Read:     readFunctionsFunction,
 		Update:   updateFunctionsFunction,
 		Delete:   deleteFunctionsFunction,
+		CustomizeDiff: func(d *schema.ResourceDiff, meta interface{}) error {
+			if d.HasChange("image") {
+				d.SetNewComputed("image_digest")
+			}
+			return nil
+		},
 		Schema: map[string]*schema.Schema{
 			// Required
 			"application_id": {
